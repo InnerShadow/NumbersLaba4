@@ -97,10 +97,11 @@ main <- function() {
   
   finaldata <- data.frame(
     x = XVec,
-    y = YVec
+    y = YVec,
+    col = YVec
   )
   
-  ggplot(data = finaldata, aes(x = x, y = y)) +
+  ggplot(data = finaldata, aes(x = x, y = y, col = col)) +
     geom_line() + geom_point() 
   
 }
@@ -157,11 +158,6 @@ SolveGause <- function(mat, size, vec){
   }
 
   return(result)
-}
-
-Print <- function(mtr, vec){
-  print(mtr)
-  print(vec)
 }
 
 GetConut <- function(x, coefficients, m){
