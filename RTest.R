@@ -80,6 +80,29 @@ main <- function() {
   
   
   
+  X0 <- as.integer(readline("Enter X0: "))
+  Xn <- as.integer(readline("Ener Xn: "))
+  Beatings <- as.integer(readline("Enter number of beatings: "))
+  step <- (Xn - X0) / Beatings
+  XVec <- rep(0, Beatings)
+  YVec <- rep(0, Beatings)
+  i <- 1
+  
+  while(X0 <= Xn){
+    XVec[i] <- X0
+    YVec[i] <- GetConut(X0, SOLUTION, m)
+    i <- i + 1
+    X0 <- X0 + step
+  }
+  
+  finaldata <- data.frame(
+    x = XVec,
+    y = YVec
+  )
+  
+  ggplot(data = finaldata, aes(x = x, y = y)) +
+    geom_line() + geom_point() 
+  
 }
 
 SolveGause <- function(mat, size, vec){
@@ -139,5 +162,13 @@ SolveGause <- function(mat, size, vec){
 Print <- function(mtr, vec){
   print(mtr)
   print(vec)
+}
+
+GetConut <- function(x, coefficients, m){
+  value <- 0
+  for(i in 1 : (m + 1)){
+    value <- value + (coefficients[i] * (x ^ (i - 1)))
+  }
+  return (value)
 }
 
