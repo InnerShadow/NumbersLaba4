@@ -2,13 +2,13 @@
 library('ggplot2')
 
 #task 9
+#n = (a / H) + b
 
 main()
 
 main <- function() {
-  #cat(sprintf("Gay boy #%d", ))
-  #cat(sprintf("Gay boy #%d\n", i_n))
-  #cat(sprintf("Gay girl #%d\n", i_m))
+  N <- c(6)
+  m <- c(5)
   
   pressure <- c(0.164, 0.328, 0.656, 0.984, 1.312, 1.640) #H
   expiration <- c(0.448, 0.432, 0.421, 0.417, 0.414, 0.412) #n
@@ -19,14 +19,66 @@ main <- function() {
   )
   
   ggplot(data = df, aes(x = pressure, y = expiration)) +
-    geom_line() +
-    geom_point() 
+    geom_line() + geom_point() 
   
-  m <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 90), nrow = 3, ncol = 3, byrow = T)
-  x <- c(1, 2, 5)
-  Print(m, x)
-  SolveGause(m, 3, x)
-  Print(m, x)
+  
+  POWERX <- rep(0, ((m * 2) + 1))
+  POWERX[1] <- m + 1
+  for(i in 1 : (m * 2)){
+    value <- 0
+    for(j in 1 : N){
+      
+      value <- value + pressure[j] ^ i
+    }
+    POWERX[(i + 1)] <- value
+  }
+  cat("\nPower: ", POWERX, "\n")
+  
+  
+  SUM41 <- matrix(rep(0, (m + 1) ^ 2), nrow = (m + 1), ncol = (m + 1), byrow = T)
+  SUM41[1, 1] = N
+  for(l in 1 : (m + 1)){
+    for(j in 1 : (m + 1)){
+      if(l == 1 && j == 1){
+        next
+      }
+      
+      k <- l + j - 1 # was - 2
+      SUM41[l, j] <- POWERX[k]
+    }
+  }
+  cat("\nMatrix:\n ")
+  print(SUM41)
+  
+  
+  PRAW <- rep(0, (m + 1))
+  for(l in 1 : (m + 1)){
+    value <- 0
+    for(i in 1 : N){
+      value <- value + expiration[i] * pressure[i] ^ (l - 1)
+    }
+    PRAW[l] <- value
+  }
+  cat("\nPRAW: ", PRAW, "\n")
+  
+  
+  SOLUTION <- SolveGause(SUM41, m + 1, PRAW)
+  cat("\nSolution: ", SOLUTION, "\n")
+  
+  S <- 0
+  for(i in 1 : N){
+    value <- expiration[i]
+    for(j in 1 : (m + 1)){
+      value <- value - (SOLUTION[j] * (pressure[i] ^ (j - 1)))
+    }
+    value <- value ^ 2
+    S <- S + value
+  }
+  S <- S * (1 / (N - m))
+  S <- S ^ 0.5
+  cat("\nS: ", S, "\n")
+  
+  
   
 }
 
@@ -37,7 +89,7 @@ SolveGause <- function(mat, size, vec){
     
     coefficients <- rep(0, size)
     for(i_n in i : size){
-      coefficients[i_n] = tmpmatrix[i_n, i] / tmpmatrix[i, i]
+      coefficients[i_n] <- tmpmatrix[i_n, i] / tmpmatrix[i, i]
     }
     
     j = i + 1
@@ -69,19 +121,19 @@ SolveGause <- function(mat, size, vec){
     }
   }
   
-  Print(tmpmatrix, tmpvec)
+  #Print(tmpmatrix, tmpvec)
   
-  resualt <- rep(0, size)
+  result <- rep(0, size)
   for(i in size : 1){
     value <- tmpvec[i]
     for(i_n in size : 1){
-      tmp <- value - (tmpmatrix[i, i_n] * resualt[i_n])
+      tmp <- value - (tmpmatrix[i, i_n] * result[i_n])
       value <- tmp
     }
-    resualt[i] <- value / tmpmatrix[i, i]
+    result[i] <- value / tmpmatrix[i, i]
   }
-  print(resualt)
 
+  return(result)
 }
 
 Print <- function(mtr, vec){
@@ -89,16 +141,3 @@ Print <- function(mtr, vec){
   print(vec)
 }
 
-m <- matrix(c(10, 20, 30, 40), nrow = 2, ncol = 2, byrow = T)
-x <- c(1, 2)
-SolveGause(m, 2, x)
-m
-m[1, 2]
-
-
-y <- c(x, 4, 5, 6, 0)
-u <- rep(1, 7)
-
-z <- c(2)
-
-length(c)
