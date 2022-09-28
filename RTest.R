@@ -65,6 +65,7 @@ main <- function() {
   SOLUTION <- SolveGause(SUM41, m + 1, PRAW)
   cat("\nSolution: ", SOLUTION, "\n")
   
+  
   S <- 0
   for(i in 1 : N){
     value <- expiration[i]
@@ -79,9 +80,8 @@ main <- function() {
   cat("\nS: ", S, "\n")
   
   
-  
-  X0 <- as.integer(readline("Enter X0: "))
-  Xn <- as.integer(readline("Ener Xn: "))
+  X0 <- as.double(readline("Enter X0: "))
+  Xn <- as.double(readline("Ener Xn: "))
   Beatings <- as.integer(readline("Enter number of beatings: "))
   step <- (Xn - X0) / Beatings
   XVec <- rep(0, Beatings)
@@ -105,6 +105,14 @@ main <- function() {
     geom_line() + geom_point() 
   
 }
+
+
+
+
+
+
+
+
 
 SolveGause <- function(mat, size, vec){
   tmpvec <- vec
@@ -145,8 +153,6 @@ SolveGause <- function(mat, size, vec){
     }
   }
   
-  #Print(tmpmatrix, tmpvec)
-  
   result <- rep(0, size)
   for(i in size : 1){
     value <- tmpvec[i]
@@ -159,6 +165,7 @@ SolveGause <- function(mat, size, vec){
 
   return(result)
 }
+
 
 GetConut <- function(x, coefficients, m){
   value <- 0
